@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Contact Book</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: #f8fafc;
+      font-family: "Poppins", sans-serif;
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #007bff;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+
+    #table table {
+      width: 100%;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    #table tr {
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    #table tr:hover {
+      background-color: #eaf3ff;
+    }
+
+    #table td {
+      padding: 15px;
+      vertical-align: middle;
+      border-bottom: 1px solid #eee;
+    }
+
+    #table img {
+      border-radius: 50%;
+    }
+
+    .btn-custom {
+      border-radius: 8px;
+      font-weight: 500;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #888;
+    }
+  </style>
+</head>
+
+<body onload="fetchContacts()">
+  <div class="container">
+    <h1>My Contacts</h1>
+
+    <div class="d-flex justify-content-end mb-3">
+      <button id="refresh" class="btn btn-outline-primary btn-custom me-2">🔄 Refresh</button>
+      <button id="addContact" class="btn btn-primary btn-custom">➕ Add Contact</button>
+    </div>
+
+    <div id="table" class="table-responsive text-center">contacts loading...</div>
+
+    <footer>📇 Contact Book App by IT Varsity</footer>
+  </div>
+
+  <script src="config.js"></script>
+  <script>
+    document.getElementById("refresh").addEventListener('click', fetchContacts);
+    document.getElementById("addContact").addEventListener('click', addContact);
+
+    function fetchContacts() {
+      fetch(rootPath + "controller/get-contacts/")
+        .then(response => response.json())
+        .then(data => displayOutput(data));
+    }
+
+    function displayOutput(data) {
+      let output = `<table class="table table-hover align-middle">`;
+      for (a in data) {
+        output += `
+          <tr onclick="editContact(${data[a].id})">
+            <td><img src="${rootPath}controller/uploads/${data[a].avatar}" width="50"/></td>
+            <td><strong>${data[a].firstname}</strong></td>
+            <td><strong>${data[a].lastname}</strong></td>
+          </tr>
+        `;
+      }
+      output += "</table>";
+      document.getElementById("table").innerHTML = output;
+    }
+
+    function addContact() {
+      window.open("add-contact.html", "_self");
+    }
+
+    function editContact(id) {
+      window.open("edit-contact.html?id=" + id, "_self");
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
